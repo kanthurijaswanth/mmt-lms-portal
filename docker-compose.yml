@@ -1,0 +1,16 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: mmt_user
+      POSTGRES_PASSWORD: mmt_pass
+      POSTGRES_DB: mmt_lms
+    ports:
+      - "5432:5432"
+    volumes:
+      - mmt_pgdata:/var/lib/postgresql/data
+      - ./server/src/models/sql:/tmp/sql # Add this line to mount your local SQL directory
+volumes:
+  mmt_pgdata: {}

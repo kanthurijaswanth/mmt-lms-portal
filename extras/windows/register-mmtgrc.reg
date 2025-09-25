@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CLASSES_ROOT\mmtgrc]
+@="URL:mmtgrc Protocol"
+"URL Protocol"=""
+
+[HKEY_CLASSES_ROOT\mmtgrc\shell]
+
+[HKEY_CLASSES_ROOT\mmtgrc\shell\open]
+
+[HKEY_CLASSES_ROOT\mmtgrc\shell\open\command]
+@="\"C:\\Windows\\System32\\cmd.exe\" /c \"C:\\Path\\To\\mmtgrc-open.cmd\" \"%1\""
