@@ -13,14 +13,28 @@ import facultyRoutes from './routes/faculty.js';
 import expRoutes from './routes/experiments.js';
 
 const app = express();
-app.use(helmet());
-app.use(express.json({ limit: '10mb' }));
-app.use(morgan('dev'));
-app.use(cors({ origin: process.env.ALLOW_ORIGIN?.split(',') || '*' }));
 
-// Static for uploads and experiments assets
+// ✅ Disable ETag so Express won’t emit 304 for identical bodies
+app.set('etag', false);
+
+// Optional but recommended: no-cache headers for API
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api/')) {
+    res.set('Cache-Control', 'no-store');   // don’t cache API
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
+  next();
+});
+
+app.use(helmet());
+app.use(cors());
+app.use(morgan('dev'));
+app.use(express.json());
+
 const uploadDir = process.env.UPLOAD_DIR || 'uploads';
-const expDir = process.env.EXPERIMENT_DIR || 'experiments';
+const expDir = process.env.EXP_DIR || 'experiments';
+
 app.use('/static/uploads', express.static(path.join(process.cwd(), 'src', uploadDir)));
 app.use('/static/experiments', express.static(path.join(process.cwd(), 'src', expDir)));
 

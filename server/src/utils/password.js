@@ -1,10 +1,12 @@
+// server/src/utils/password.js
 import bcrypt from 'bcryptjs';
 
+const saltRounds = 10;
+
 export async function hashPassword(plain) {
-  const salt = await bcrypt.genSalt(10);
-  return await bcrypt.hash(plain, salt);
+  return bcrypt.hash(plain, saltRounds);
 }
 
 export async function comparePassword(plain, hash) {
-  return await bcrypt.compare(plain, hash);
+  return bcrypt.compare(plain, hash);
 }
