@@ -7,18 +7,41 @@ import AdminDashboard from './pages/Admin/Dashboard.jsx';
 import StudentDashboard from './pages/Student/Dashboard.jsx';
 import StudentExperiment from './pages/Student/ExperimentDetail.jsx';
 import FacultyDashboard from './pages/Faculty/Dashboard.jsx';
+import RoleSelect from './pages/RoleSelect.jsx';
+import RequireRole from './RequireRole.jsx';
+import './styles.css';
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App/>}>
-          <Route index element={<Navigate to="/login" replace />} />
-          <Route path="login" element={<Login/>} />
-          <Route path="admin" element={<AdminDashboard/>} />
-          <Route path="student" element={<StudentDashboard/>} />
-          <Route path="student/experiment/:id" element={<StudentExperiment/>} />
-          <Route path="faculty" element={<FacultyDashboard/>} />
+        <Route path="/" element={<App />}>
+          {/* land on role selection */}
+          <Route index element={<Navigate to="/select-role" replace />} />
+
+          {/* role selection page with 3 cards */}
+          <Route path="select-role" element={<RoleSelect />} />
+
+          {/* role-specific login routes */}
+          <Route path="login/:role" element={<Login />} />
+
+          {/* Guarded dashboards */}
+          <Route
+            path="admin"
+            element={<RequireRole role="admin"><AdminDashboard /></RequireRole>}
+          />
+          <Route
+            path="student"
+            element={<RequireRole role="student"><StudentDashboard /></RequireRole>}
+          />
+          <Route
+            path="student/experiment/:id"
+            element={<RequireRole role="student"><StudentExperiment /></RequireRole>}
+          />
+          <Route
+            path="faculty"
+            element={<RequireRole role="faculty"><FacultyDashboard /></RequireRole>}
+          />
         </Route>
       </Routes>
     </BrowserRouter>
